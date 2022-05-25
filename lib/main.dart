@@ -3,11 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:project_praktikum/feature/surah_page.dart';
+
+import 'model/bookmark_model.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox('bookmark');
+  Hive.registerAdapter(BookmarkModelAdapter());
+  await Hive.openBox<BookmarkModel>('bookmark');
+  await Hive.openBox<BookmarkModel>('last_read');
   runApp(const MyApp());
 }
 
@@ -42,9 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Timer(const Duration(seconds: 3),
             ()=>Navigator.pushReplacement(context,
-            MaterialPageRoute(builder:
-                (context) => const SurahPage()
-            )
+            PageTransition(child: const SurahPage(), type: PageTransitionType.fade)
         )
     );
   }
