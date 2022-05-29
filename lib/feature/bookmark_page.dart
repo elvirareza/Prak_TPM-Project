@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:project_praktikum/helper/bookmark_helper.dart';
-import 'package:project_praktikum/model/bookmark_model.dart';
 import 'package:project_praktikum/tools/menu_tools.dart';
 
 class BookmarkPage extends StatefulWidget {
@@ -31,9 +29,13 @@ class _BookmarkPageState extends State<BookmarkPage> {
   }
 
   Widget _buildBookmarkList() {
-    final bookmark = getBookmark().values.toList();
-    return ListView.builder(
-      itemCount: bookmark.length,
+    final bookmark = getBookmark().values;
+    if(bookmark.isEmpty) {
+      return const SizedBox(height: 0);
+    } else {
+      final bookmarks = bookmark.toList();
+      return ListView.builder(
+      itemCount: bookmarks.length,
       itemBuilder: (BuildContext context, int index) {
         return Column(
           children: [ index == 0
@@ -42,7 +44,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                 leading: Icon(Icons.bookmark),
                 title: Text("Bookmark"),
               )
-            : SizedBox(height: 0),
+            : const SizedBox(height: 0),
             InkWell(
               onTap: () {
                 showModalBottomSheet(context: context, builder: (BuildContext bc) {
@@ -50,7 +52,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                       padding: const EdgeInsets.all(15),
                       child: Wrap(
                         children: [
-                          Center(child: Text('QS. ${bookmark[index].surah}: Ayah ${bookmark[index].numberAyah}')),
+                          Center(child: Text('QS. ${bookmarks[index].surah}: Ayah ${bookmarks[index].numberAyah}')),
                           InkWell(
                             onTap: () {
 
@@ -85,27 +87,32 @@ class _BookmarkPageState extends State<BookmarkPage> {
               },
               child: ListTile(
                 minLeadingWidth : 25,
-                leading: Text(""),
-                title: Text('QS. ${bookmark[index].surah} ${bookmark[index].numberSurah}: Ayah ${bookmark[index].numberAyah} (Juz ${bookmark[index].juz})'),
-                trailing: Text("${bookmark[index].date}", textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, color: Colors.blueGrey))
+                leading: const Text(""),
+                title: Text('QS. ${bookmarks[index].surah} ${bookmarks[index].numberSurah}: Ayah ${bookmarks[index].numberAyah} (Juz ${bookmarks[index].juz})'),
+                trailing: Text("${bookmarks[index].date}", textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, color: Colors.blueGrey))
               )
             ),
           ],
         );
       },
     );
+    }
   }
 
   Widget _buildLastReadList() {
-    final lastRead = getLastRead().values.toList();
-    return InkWell(
+    final get = getLastRead().values;
+    if(get.isEmpty) {
+      return SizedBox(height: 0);
+    } else {
+      final lastRead = get.toList();
+      return InkWell(
       onTap: (){
 
       },
       child: ListTile(
         minLeadingWidth : 10,
         leading: const Icon(Icons.menu_book),
-        title: Padding(
+        title: const Padding(
           padding: EdgeInsets.only(bottom: 4),
           child: Text("Last Read"),
         ),
@@ -114,5 +121,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
         trailing: Text("${lastRead[0].date}", textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, color: Colors.blueGrey)),
       ),
     );
+    }
   }
 }
