@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:project_praktikum/helper/bookmark_helper.dart';
+import 'package:project_praktikum/model/bookmark_model.dart';
 import 'package:project_praktikum/tools/menu_tools.dart';
 
 class BookmarkPage extends StatefulWidget {
@@ -17,7 +20,99 @@ class _BookmarkPageState extends State<BookmarkPage> {
       appBar: AppBar(
         title: const Text('Al-Quran'),
       ),
-      body: Menu(label: label),
+      body: Column(
+        children: [
+          Menu(label: label),
+          Container(child: _buildLastReadList()),
+          Expanded(child: _buildBookmarkList()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBookmarkList() {
+    final bookmark = getBookmark().values.toList();
+    return ListView.builder(
+      itemCount: bookmark.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Column(
+          children: [ index == 0
+            ? const ListTile(
+                minLeadingWidth : 10,
+                leading: Icon(Icons.bookmark),
+                title: Text("Bookmark"),
+              )
+            : SizedBox(height: 0),
+            InkWell(
+              onTap: () {
+                showModalBottomSheet(context: context, builder: (BuildContext bc) {
+                  return Container(
+                      padding: const EdgeInsets.all(15),
+                      child: Wrap(
+                        children: [
+                          Center(child: Text('QS. ${bookmark[index].surah}: Ayah ${bookmark[index].numberAyah}')),
+                          InkWell(
+                            onTap: () {
+
+                            },
+                            child: const ListTile(
+                              leading: Icon(Icons.local_library),
+                              title: Text('Read as Surah'),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+
+                            },
+                            child: const ListTile(
+                              leading: Icon(Icons.local_library),
+                              title: Text('Read as Juz'),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+
+                            },
+                            child: const ListTile(
+                              leading: Icon(Icons.delete),
+                              title: Text('Delete Bookmark'),
+                            ),
+                          )
+                        ],
+                      )
+                  );
+                });
+              },
+              child: ListTile(
+                minLeadingWidth : 25,
+                leading: Text(""),
+                title: Text('QS. ${bookmark[index].surah} ${bookmark[index].numberSurah}: Ayah ${bookmark[index].numberAyah} (Juz ${bookmark[index].juz})'),
+                trailing: Text("${bookmark[index].date}", textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, color: Colors.blueGrey))
+              )
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLastReadList() {
+    final lastRead = getLastRead().values.toList();
+    return InkWell(
+      onTap: (){
+
+      },
+      child: ListTile(
+        minLeadingWidth : 10,
+        leading: const Icon(Icons.menu_book),
+        title: Padding(
+          padding: EdgeInsets.only(bottom: 4),
+          child: Text("Last Read"),
+        ),
+        subtitle: Text('QS. ${lastRead[0].numberSurah}: Ayah ${lastRead[0].numberAyah} (Juz ${lastRead[0].juz})',
+            style: const TextStyle(fontSize: 14, color: Colors.black)),
+        trailing: Text("${lastRead[0].date}", textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, color: Colors.blueGrey)),
+      ),
     );
   }
 }

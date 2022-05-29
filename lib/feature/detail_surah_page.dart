@@ -56,69 +56,108 @@ class _DetailSurahState extends State<DetailSurah> {
   Widget _buildSuccess(snapshot) {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        return Column(
-          children: [
-            InkWell(
-              onTap: () {
-                showModalBottomSheet(context: context, builder: (BuildContext bc) {
-                  return Container(
-                    padding: const EdgeInsets.all(15),
-                    child: Wrap(
-                      children: [
-                        Center(child: Text('QS. ${widget.snapshot!.engName}: Ayah ${snapshot.data?.number[index]}')),
-                        InkWell(
-                          onTap: () {
-                            final bookmark = BookmarkModel(
-                                numberSurah: widget.snapshot!.number,
-                                surah: widget.snapshot!.engName,
-                                numberAyah: snapshot.data?.number[index],
-                                juz: snapshot.data?.juz[index],
-                            );
-                            _bookmark.add(bookmark);
-                          },
-                          child: const ListTile(
-                            leading: Icon(Icons.add),
-                            title: Text('Add to bookmark'),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            final lastRead = BookmarkModel(
-                              numberSurah: widget.snapshot!.number,
-                              surah: widget.snapshot!.engName,
-                              numberAyah: snapshot.data?.number[index],
-                              juz: snapshot.data?.juz[index],
-                            );
-                            _lastRead.put('read', lastRead);
-                            debugPrint(_lastRead.get('read')!.surah.toString());
-                          },
-                          child: const ListTile(
-                            leading: Icon(Icons.receipt),
-                            title: Text('Save as last read'),
-                          ),
-                        ),
-                      ],
-                    )
-                  );
-                });
-              },
-              child: ListTile(
-                leading: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text('${snapshot.data?.number[index]}')],
+        return Container(
+          color: (index % 2 == 0) ? Colors.transparent : Colors.blueGrey.shade50,
+          child: Column(
+            children: [
+              snapshot.data?.number[index] == 1
+                  ? _buildBasmallah()
+                  : SizedBox(height: 0),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(context: context, builder: (BuildContext bc) {
+                    return Container(
+                        padding: const EdgeInsets.all(15),
+                        child: Wrap(
+                          children: [
+                            Center(child: Text('QS. ${widget.snapshot!.engName}: Ayah ${snapshot.data?.number[index]}')),
+                            InkWell(
+                              onTap: () {
+                                DateTime today = DateTime.now();
+                                String date = "${today.day}/${today.month}/${today.year} ${today.hour}:${today.minute}";
+                                final bookmark = BookmarkModel(
+                                    numberSurah: widget.snapshot!.number,
+                                    surah: widget.snapshot!.engName,
+                                    numberAyah: snapshot.data?.number[index],
+                                    juz: snapshot.data?.juz[index],
+                                    date: date
+                                );
+                                _bookmark.add(bookmark);
+                              },
+                              child: const ListTile(
+                                leading: Icon(Icons.add),
+                                title: Text('Add to bookmark'),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                DateTime today = DateTime.now();
+                                String date = "${today.day}/${today.month}/${today.year} ${today.hour}:${today.minute}";
+                                final lastRead = BookmarkModel(
+                                    numberSurah: widget.snapshot!.number,
+                                    surah: widget.snapshot!.engName,
+                                    numberAyah: snapshot.data?.number[index],
+                                    juz: snapshot.data?.juz[index],
+                                    date: date
+                                );
+                                _lastRead.put('read', lastRead);
+                                debugPrint(_lastRead.get('read')!.surah.toString());
+                              },
+                              child: const ListTile(
+                                leading: Icon(Icons.receipt),
+                                title: Text('Save as last read'),
+                              ),
+                            ),
+                          ],
+                        )
+                    );
+                  });
+                },
+                child: ListTile(
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text('${snapshot.data?.number[index]}')],
+                  ),
+                  title: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: snapshot.data?.number[index] == 1
+                        ? _splitString(snapshot.data?.surah[index])
+                        : Text('${snapshot.data?.surah[index]}',
+                        textAlign: TextAlign.right, style: const TextStyle(fontSize: 25)),
+
+                  ),
+                  subtitle: Text('${snapshot.data?.trans[index]}'),
                 ),
-                title: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text('${snapshot.data?.surah[index]}',
-                      textAlign: TextAlign.right, style: const TextStyle(fontSize: 25)),
-                ),
-                subtitle: Text('${snapshot.data?.trans[index]}'),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         );
       },
       itemCount: snapshot.data.number.length,
     );
+  }
+
+  Widget _buildBasmallah(){
+    return (
+        Container(
+          decoration: BoxDecoration(
+            // border: Border.all(color: Colors.blueGrey),
+            color: Colors.blueGrey.shade100,
+          ),
+          padding: EdgeInsets.symmetric(vertical: 12.0),
+          child: const ListTile(
+              title: Text("بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ",
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 25),)
+          ),
+        )
+    );
+  }
+
+  Widget _splitString(String text) {
+    String finalText;
+    List<String> textList = text.split(" ");
+    textList.removeRange(0, 4);
+    textList.isEmpty ? finalText = text : finalText = textList.join(" ");
+    return Text(finalText, textAlign: TextAlign.right, style: const TextStyle(fontSize: 25));
   }
 }
