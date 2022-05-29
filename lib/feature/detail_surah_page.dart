@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:project_praktikum/api/surah_api.dart';
 import 'package:project_praktikum/model/bookmark_model.dart';
 import 'package:project_praktikum/model/surah_model.dart';
@@ -16,6 +17,7 @@ class DetailSurah extends StatefulWidget {
 class _DetailSurahState extends State<DetailSurah> {
   final _bookmark = Hive.box<BookmarkModel>('bookmark');
   final _lastRead = Hive.box<BookmarkModel>('last_read');
+  final arabicNumber = ArabicNumbers();
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +118,10 @@ class _DetailSurahState extends State<DetailSurah> {
                 child: ListTile(
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Text('${snapshot.data?.number[index]}')],
+                    children: [Text(
+                        arabicNumber.convert(snapshot.data?.number[index]),
+                        style: const TextStyle(fontSize: 20)
+                    )],
                   ),
                   title: Padding(
                     padding: const EdgeInsets.only(bottom: 10),

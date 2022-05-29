@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:arabic_numbers/arabic_numbers.dart';
 
 import 'package:project_praktikum/api/juz_api.dart';
 import 'package:project_praktikum/model/bookmark_model.dart';
@@ -16,6 +17,7 @@ class DetailJuz extends StatefulWidget {
 class _DetailJuzState extends State<DetailJuz> {
   final _bookmark = Hive.box<BookmarkModel>('bookmark');
   final _lastRead = Hive.box<BookmarkModel>('last_read');
+  final arabicNumber = ArabicNumbers();
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +142,10 @@ class _DetailJuzState extends State<DetailJuz> {
                 child: ListTile(
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Text("${data[index].numberInSurah}")],
+                    children: [Text(
+                        arabicNumber.convert(data[index].numberInSurah),
+                        style: const TextStyle(fontSize: 20)
+                    )],
                   ),
                   title: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
