@@ -22,13 +22,14 @@ class BookmarkModelAdapter extends TypeAdapter<BookmarkModel> {
       numberAyah: fields[2] as int?,
       juz: fields[3] as int?,
       date: fields[4] as String?,
+      numberAyahs: fields[5] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookmarkModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.numberSurah)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class BookmarkModelAdapter extends TypeAdapter<BookmarkModel> {
       ..writeByte(3)
       ..write(obj.juz)
       ..writeByte(4)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(5)
+      ..write(obj.numberAyahs);
   }
 
   @override

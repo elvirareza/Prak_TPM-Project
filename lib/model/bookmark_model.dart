@@ -9,7 +9,8 @@ class BookmarkModel extends HiveObject {
     required this.surah,
     required this.numberAyah,
     required this.juz,
-    required this.date
+    required this.date,
+    required this.numberAyahs,
   });
 
   @HiveField(0)
@@ -26,4 +27,7 @@ class BookmarkModel extends HiveObject {
 
   @HiveField(4)
   String? date;
+
+  @HiveField(5)
+  int? numberAyahs;
 }

@@ -7,7 +7,7 @@ import 'package:project_praktikum/model/juz_model.dart';
 Future<Map<String, dynamic>> getJuz(int number) async {
 
   final response = await http.get(Uri.parse('https://api.alquran.cloud/v1/juz/$number'));
-  debugPrint("GetJuz - response : ${response.body}");
+  //debugPrint("GetJuz - response : ${response.body}");
 
   return (_processResponseJuz(response));
 }
@@ -26,7 +26,7 @@ Future<Map<String, dynamic>> _processResponseJuz(
 Future<Map<String, dynamic>> getTrans(int number) async {
 
   final response = await http.get(Uri.parse('https://api.alquran.cloud/v1/juz/$number/en.asad'));
-  debugPrint("GetTrans - response : ${response.body}");
+  //debugPrint("GetTrans - response : ${response.body}");
 
   return (_processResponseTrans(response));
 }

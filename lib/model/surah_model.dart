@@ -26,12 +26,14 @@ class SurahList {
 
 class Surah {
   List? number;
+  List? numberAyahs;
   List? surah;
   List? trans;
   List? juz;
 
   Surah({
     this.number,
+    this.numberAyahs,
     this.surah,
     this.trans,
     this.juz,

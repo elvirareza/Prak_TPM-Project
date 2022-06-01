@@ -36,9 +36,10 @@ Future getSurah(String number) async {
     value.add(jsonDecode(res.body));
   }
 
-  List num = []; List surah = []; List juz = [];
+  List num = []; List surah = []; List juz = []; List numberAyahs = [];
   for(var val in value[0]['data']['ayahs']) {
     num.add(val['numberInSurah']);
+    numberAyahs.add(val['number']);
     surah.add(val['text']);
     juz.add(val['juz']);
   }
@@ -50,6 +51,7 @@ Future getSurah(String number) async {
 
   Surah surahs = Surah(
     number: num,
+    numberAyahs: numberAyahs,
     surah: surah,
     trans: trans,
     juz: juz,

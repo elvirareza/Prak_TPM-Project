@@ -4,11 +4,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:arabic_numbers/arabic_numbers.dart';
 import 'package:project_praktikum/api/surah_api.dart';
 import 'package:project_praktikum/model/bookmark_model.dart';
-import 'package:project_praktikum/model/surah_model.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class DetailSurah extends StatefulWidget {
-  final SurahList? snapshot;
-  const DetailSurah({Key? key, required this.snapshot}) : super(key: key);
+  final String? engName; final int? number, ayah;
+  const DetailSurah({Key? key, this.engName, this.number, this.ayah}) : super(key: key);
 
   @override
   State<DetailSurah> createState() => _DetailSurahState();
@@ -17,13 +17,14 @@ class DetailSurah extends StatefulWidget {
 class _DetailSurahState extends State<DetailSurah> {
   final _bookmark = Hive.box<BookmarkModel>('bookmark');
   final _lastRead = Hive.box<BookmarkModel>('last_read');
+  final ItemScrollController itemScrollController = ItemScrollController();
   final arabicNumber = ArabicNumbers();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.snapshot!.engName.toString()),
+        title: Text(widget.engName.toString()),
       ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +36,7 @@ class _DetailSurahState extends State<DetailSurah> {
 
   Widget _buildDataList() {
     return FutureBuilder(
-        future: getSurah(widget.snapshot!.number.toString()),
+        future: getSurah(widget.number!.toString()),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
             return _buildSuccess(snapshot);
@@ -56,15 +57,16 @@ class _DetailSurahState extends State<DetailSurah> {
   }
 
   Widget _buildSuccess(snapshot) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
+    return ScrollablePositionedList.builder(
+        initialScrollIndex: widget.ayah != null? widget.ayah! - 1 : 0,
+        itemBuilder: (BuildContext context, int index) {
         return Container(
           color: (index % 2 == 0) ? Colors.transparent : Colors.blueGrey.shade50,
           child: Column(
             children: [
               snapshot.data?.number[index] == 1
                   ? _buildBasmallah()
-                  : SizedBox(height: 0),
+                  : const SizedBox(height: 0),
               InkWell(
                 onTap: () {
                   showModalBottomSheet(context: context, builder: (BuildContext bc) {
@@ -72,17 +74,18 @@ class _DetailSurahState extends State<DetailSurah> {
                         padding: const EdgeInsets.all(15),
                         child: Wrap(
                           children: [
-                            Center(child: Text('QS. ${widget.snapshot!.engName}: Ayah ${snapshot.data?.number[index]}')),
+                            Center(child: Text('QS. ${widget.engName}: Ayah ${snapshot.data?.number[index]}')),
                             InkWell(
                               onTap: () {
                                 DateTime today = DateTime.now();
                                 String date = "${today.day}/${today.month}/${today.year} ${today.hour}:${today.minute}";
                                 final bookmark = BookmarkModel(
-                                    numberSurah: widget.snapshot!.number,
-                                    surah: widget.snapshot!.engName,
+                                    numberSurah: widget.number,
+                                    surah: widget.engName,
                                     numberAyah: snapshot.data?.number[index],
                                     juz: snapshot.data?.juz[index],
-                                    date: date
+                                    date: date,
+                                    numberAyahs: snapshot.data?.numberAyahs[index],
                                 );
                                 _bookmark.add(bookmark);
                               },
@@ -96,11 +99,12 @@ class _DetailSurahState extends State<DetailSurah> {
                                 DateTime today = DateTime.now();
                                 String date = "${today.day}/${today.month}/${today.year} ${today.hour}:${today.minute}";
                                 final lastRead = BookmarkModel(
-                                    numberSurah: widget.snapshot!.number,
-                                    surah: widget.snapshot!.engName,
+                                    numberSurah: widget.number,
+                                    surah: widget.engName,
                                     numberAyah: snapshot.data?.number[index],
                                     juz: snapshot.data?.juz[index],
-                                    date: date
+                                    date: date,
+                                    numberAyahs: snapshot.data?.numberAyahs[index]
                                 );
                                 _lastRead.put('read', lastRead);
                                 debugPrint(_lastRead.get('read')!.surah.toString());
@@ -149,7 +153,7 @@ class _DetailSurahState extends State<DetailSurah> {
             // border: Border.all(color: Colors.blueGrey),
             color: Colors.blueGrey.shade100,
           ),
-          padding: EdgeInsets.symmetric(vertical: 12.0),
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
           child: const ListTile(
               title: Text("بِسْمِ ٱللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ",
                 textAlign: TextAlign.center, style: TextStyle(fontSize: 25),)

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:project_praktikum/feature/detail_juz_page.dart';
 import 'package:project_praktikum/helper/bookmark_helper.dart';
 import 'package:project_praktikum/tools/menu_tools.dart';
+
+import 'detail_surah_page.dart';
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage({Key? key}) : super(key: key);
@@ -55,7 +59,9 @@ class _BookmarkPageState extends State<BookmarkPage> {
                           Center(child: Text('QS. ${bookmarks[index].surah}: Ayah ${bookmarks[index].numberAyah}')),
                           InkWell(
                             onTap: () {
-
+                              Navigator.push(context, PageTransition(type: PageTransitionType.fade,
+                                  child: DetailSurah(engName: bookmarks[index].surah, number: bookmarks[index].numberSurah,
+                                    ayah: bookmarks[index].numberAyah)));
                             },
                             child: const ListTile(
                               leading: Icon(Icons.local_library),
@@ -64,7 +70,9 @@ class _BookmarkPageState extends State<BookmarkPage> {
                           ),
                           InkWell(
                             onTap: () {
-
+                              debugPrint(bookmarks[index].numberAyahs.toString());
+                              Navigator.push(context, PageTransition(type: PageTransitionType.fade,
+                                  child: DetailJuz(number: bookmarks[index].juz!, numberAyahs: bookmarks[index].numberAyahs)));
                             },
                             child: const ListTile(
                               leading: Icon(Icons.local_library),
@@ -73,7 +81,8 @@ class _BookmarkPageState extends State<BookmarkPage> {
                           ),
                           InkWell(
                             onTap: () {
-
+                              getBookmark().deleteAt(index);
+                              setState(() {});
                             },
                             child: const ListTile(
                               leading: Icon(Icons.delete),
@@ -107,8 +116,39 @@ class _BookmarkPageState extends State<BookmarkPage> {
       final lastRead = get.toList();
       return InkWell(
       onTap: (){
-
-      },
+        showModalBottomSheet(context: context, builder: (BuildContext bc) {
+          return Container(
+              padding: const EdgeInsets.all(15),
+              child: Wrap(
+                children: [
+                  Center(child: Text('QS. ${lastRead[0].surah}: Ayah ${lastRead[0].numberAyah}')),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, PageTransition(type: PageTransitionType.fade,
+                          child: DetailSurah(engName: lastRead[0].surah, number: lastRead[0].numberSurah,
+                              ayah: lastRead[0].numberAyah)));
+                    },
+                    child: const ListTile(
+                      leading: Icon(Icons.local_library),
+                      title: Text('Read as Surah'),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      debugPrint(lastRead[0].numberAyahs.toString());
+                      Navigator.push(context, PageTransition(type: PageTransitionType.fade,
+                          child: DetailJuz(number: lastRead[0].juz!, numberAyahs: lastRead[0].numberAyahs)));
+                    },
+                    child: const ListTile(
+                      leading: Icon(Icons.local_library),
+                      title: Text('Read as Juz'),
+                    ),
+                  ),
+                ],
+              )
+          );
+        }
+      );},
       child: ListTile(
         minLeadingWidth : 10,
         leading: const Icon(Icons.menu_book),

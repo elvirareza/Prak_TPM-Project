@@ -58,7 +58,7 @@ class _SurahPageState extends State<SurahPage> {
             InkWell(
               onTap: () {
                 Navigator.push(context, PageTransition(type: PageTransitionType.fade,
-                    child: DetailSurah(snapshot: snapshot.data[index])));
+                    child: DetailSurah(engName: snapshot.data[index].engName, number: snapshot.data[index].number)));
               },
               child: ListTile(
                 leading: Column(
