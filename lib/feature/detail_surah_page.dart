@@ -64,9 +64,9 @@ class _DetailSurahState extends State<DetailSurah> {
           color: (index % 2 == 0) ? Colors.transparent : Colors.blueGrey.shade50,
           child: Column(
             children: [
-              snapshot.data?.number[index] == 1
-                  ? _buildBasmallah()
-                  : const SizedBox(height: 0),
+              snapshot.data?.number[index] != 1 || widget.engName == 'At-Tawba'
+                  ? const SizedBox(height: 0)
+                  : _buildBasmallah(),
               InkWell(
                 onTap: () {
                   showModalBottomSheet(context: context, builder: (BuildContext bc) {
@@ -129,11 +129,10 @@ class _DetailSurahState extends State<DetailSurah> {
                   ),
                   title: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: snapshot.data?.number[index] == 1
-                        ? _splitString(snapshot.data?.surah[index])
-                        : Text('${snapshot.data?.surah[index]}',
-                        textAlign: TextAlign.right, style: const TextStyle(fontSize: 25)),
-
+                    child: snapshot.data?.number[index] != 1 || widget.engName == 'At-Tawba'
+                        ? Text('${snapshot.data?.surah[index]}',
+                        textAlign: TextAlign.right, style: const TextStyle(fontSize: 25))
+                        : _splitString(snapshot.data?.surah[index]),
                   ),
                   subtitle: Text('${snapshot.data?.trans[index]}'),
                 ),

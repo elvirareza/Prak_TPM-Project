@@ -85,7 +85,7 @@ class _DetailJuzState extends State<DetailJuz> {
                   ? Column(
                       children: [
                         _buildTitle(data[index].surah!),
-                        data[index].number == 1
+                        data[index].number == 1  || data[index].surah!.number == 9
                           ? SizedBox(height: 0)
                           : _buildBasmallah()
                       ],
@@ -153,11 +153,11 @@ class _DetailJuzState extends State<DetailJuz> {
                   ),
                   title: Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: data[index].numberInSurah == 1
-                        ? _splitString('${data[index].text}')
-                        : Text(
+                    child: data[index].numberInSurah != 1 || data[index].surah!.number == 9
+                        ? Text(
                           '${data[index].text}',
-                          textAlign: TextAlign.right, style: const TextStyle(fontSize: 25)),
+                          textAlign: TextAlign.right, style: const TextStyle(fontSize: 25)) :
+                          _splitString('${data[index].text}'),
                   ),
                   subtitle: Text('${trans![index].text}'),
                 ),
