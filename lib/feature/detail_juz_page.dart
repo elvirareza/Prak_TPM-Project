@@ -20,6 +20,7 @@ class DetailJuz extends StatefulWidget {
 class _DetailJuzState extends State<DetailJuz> {
   final _bookmark = Hive.box<BookmarkModel>('bookmark');
   final _lastRead = Hive.box<BookmarkModel>('last_read');
+  bool check = false;
   final arabicNumber = ArabicNumbers();
 
   @override
@@ -113,14 +114,32 @@ class _DetailJuzState extends State<DetailJuz> {
                                   date: date,
                                   numberAyahs: data[index].number,
                                 );
+                                for(var mark in _bookmark.values) {
+                                  if(mark.numberAyahs == bookmark.numberAyahs) {
+                                    setState(() {
+                                      check = true;
+                                    });
+                                  }
+                                }
                                 Navigator.pop(context);
-                                _bookmark.add(bookmark).whenComplete(() =>
-                                    Fluttertoast.showToast(
-                                        msg: "Added to bookmark",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM
-                                    )
-                                );
+                                if(check == false) {
+                                  _bookmark.add(bookmark).whenComplete(() =>
+                                      Fluttertoast.showToast(
+                                          msg: "Added to bookmark",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM
+                                      )
+                                  );
+                                }else {
+                                  Fluttertoast.showToast(
+                                      msg: "Added to bookmark",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM
+                                  );
+                                }
+                                setState(() {
+                                  check = false;
+                                });
                               },
                               child: const ListTile(
                                 leading: Icon(Icons.add),

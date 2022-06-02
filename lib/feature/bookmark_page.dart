@@ -189,7 +189,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           padding: EdgeInsets.only(bottom: 4),
           child: Text("Last Read"),
         ),
-        subtitle: Text('QS. ${lastRead[0].numberSurah}: Ayah ${lastRead[0].numberAyah} (Juz ${lastRead[0].juz})',
+        subtitle: Text('QS. ${lastRead[0].surah} ${lastRead[0].numberSurah}: Ayah ${lastRead[0].numberAyah} (Juz ${lastRead[0].juz})',
             style: const TextStyle(fontSize: 14, color: Colors.black)),
         trailing: Text("${lastRead[0].date}", textAlign: TextAlign.right, style: const TextStyle(fontSize: 12, color: Colors.blueGrey)),
       ),
