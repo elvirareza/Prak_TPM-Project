@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:arabic_numbers/arabic_numbers.dart';
@@ -6,6 +7,7 @@ import 'package:project_praktikum/api/juz_api.dart';
 import 'package:project_praktikum/model/bookmark_model.dart';
 import 'package:project_praktikum/model/juz_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DetailJuz extends StatefulWidget {
   final int number; final int? numberAyahs;
@@ -78,7 +80,7 @@ class _DetailJuzState extends State<DetailJuz> {
       itemCount: data!.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          color: (index % 2 == 0) ? Colors.transparent : Colors.blueGrey.shade50,
+          color: (index % 2 == 0) ? Colors.blueGrey[50] : Colors.grey[50],
           child: Column(
             children: [
               data[index].numberInSurah == 1
@@ -111,7 +113,14 @@ class _DetailJuzState extends State<DetailJuz> {
                                   date: date,
                                   numberAyahs: data[index].number,
                                 );
-                                _bookmark.add(bookmark);
+                                Navigator.pop(context);
+                                _bookmark.add(bookmark).whenComplete(() =>
+                                    Fluttertoast.showToast(
+                                        msg: "Added to bookmark",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM
+                                    )
+                                );
                               },
                               child: const ListTile(
                                 leading: Icon(Icons.add),
@@ -130,7 +139,15 @@ class _DetailJuzState extends State<DetailJuz> {
                                   date: date,
                                   numberAyahs: data[index].number,
                                 );
-                                _lastRead.put('read', lastRead);
+                                Navigator.pop(context);
+                                _lastRead.put('read', lastRead).whenComplete(() =>
+                                    Fluttertoast.showToast(
+                                      msg: "Saved as last read",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                    )
+                                );
+
                                 debugPrint(_lastRead.get('read')!.surah.toString());
                               },
                               child: const ListTile(
@@ -144,6 +161,7 @@ class _DetailJuzState extends State<DetailJuz> {
                   });
                 },
                 child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [Text(
@@ -173,9 +191,9 @@ class _DetailJuzState extends State<DetailJuz> {
     return Container(
       decoration: BoxDecoration(
         border: Border.symmetric(horizontal: BorderSide(color: Colors.blueGrey.shade300)),
-        color: Colors.blueGrey.shade100,
+        color: Colors.blueGrey[100],
       ),
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
+      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 64.0),
       child: ListTile(
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -197,7 +215,7 @@ class _DetailJuzState extends State<DetailJuz> {
       Container(
         decoration: BoxDecoration(
           // border: Border.all(color: Colors.blueGrey),
-          color: Colors.blueGrey.shade100,
+          color: Colors.white,
         ),
         padding: EdgeInsets.symmetric(vertical: 12.0),
         child: const ListTile(

@@ -44,28 +44,6 @@ class _JuzPageState extends State<JuzPage> {
     });
   }
 
-  // Widget _futureBuilder(int index) {
-  //   return FutureBuilder (
-  //       future: getJuz(index+1),
-  //       builder: (context, snapshot) {
-  //         if (snapshot.hasData) {
-  //           Object? juzModel = snapshot.data;
-  //           return _buildItem(juzModel, index);
-  //         } else if (snapshot.hasError) {
-  //           debugPrint('${snapshot.error}');
-  //           return Text('${snapshot.error}');
-  //         }
-  //         return Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: const [
-  //             CircularProgressIndicator(),
-  //           ],
-  //         );
-  //       }
-  //   );
-  // }
-
   Widget _buildItem(int index) {
     return Card(
       child: InkWell(
@@ -79,25 +57,4 @@ class _JuzPageState extends State<JuzPage> {
       )
     );
   }
-
-  // Widget _futurebuilder(int number) {
-  //   return FutureBuilder(
-  //       future: getJuz(),
-  //       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-  //         if (snapshot.hasData) {
-  //           return _buildSuccess(snapshot);
-  //         } else if (snapshot.hasError) {
-  //           debugPrint('${snapshot.error}');
-  //           return Text('${snapshot.error}');
-  //         }
-  //         return Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           children: const [
-  //             CircularProgressIndicator(),
-  //           ],
-  //         );
-  //       }
-  //   );
-
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:arabic_numbers/arabic_numbers.dart';
@@ -61,7 +62,7 @@ class _DetailSurahState extends State<DetailSurah> {
         initialScrollIndex: widget.ayah != null? widget.ayah! - 1 : 0,
         itemBuilder: (BuildContext context, int index) {
         return Container(
-          color: (index % 2 == 0) ? Colors.transparent : Colors.blueGrey.shade50,
+          color: (index % 2 == 0) ? Colors.grey[50] : Colors.blueGrey.shade50,
           child: Column(
             children: [
               snapshot.data?.number[index] != 1 || widget.engName == 'At-Tawba'
@@ -87,7 +88,14 @@ class _DetailSurahState extends State<DetailSurah> {
                                     date: date,
                                     numberAyahs: snapshot.data?.numberAyahs[index],
                                 );
-                                _bookmark.add(bookmark);
+                                Navigator.pop(context);
+                                _bookmark.add(bookmark).whenComplete(() =>
+                                    Fluttertoast.showToast(
+                                        msg: "Added to bookmark",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM
+                                    )
+                                );
                               },
                               child: const ListTile(
                                 leading: Icon(Icons.add),
@@ -106,7 +114,14 @@ class _DetailSurahState extends State<DetailSurah> {
                                     date: date,
                                     numberAyahs: snapshot.data?.numberAyahs[index]
                                 );
-                                _lastRead.put('read', lastRead);
+                                Navigator.pop(context);
+                                _lastRead.put('read', lastRead).whenComplete(() =>
+                                    Fluttertoast.showToast(
+                                        msg: "Saved as last read",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM
+                                    )
+                                );
                                 debugPrint(_lastRead.get('read')!.surah.toString());
                               },
                               child: const ListTile(
@@ -120,6 +135,7 @@ class _DetailSurahState extends State<DetailSurah> {
                   });
                 },
                 child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [Text(

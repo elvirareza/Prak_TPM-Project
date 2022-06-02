@@ -67,9 +67,10 @@ class _SurahPageState extends State<SurahPage> {
                 ),
                 title: Text('${snapshot.data?[index].engName}'),
                 subtitle: Text('${snapshot.data?[index].type} | ${snapshot.data?[index].ayah} ayahs'),
-                trailing: Text('${snapshot.data?[index].name}'),
+                trailing: Text('${snapshot.data?[index].name}', textAlign: TextAlign.right,),
               ),
-            )
+            ),
+            Divider(height: 3, color: Colors.blueGrey[50])
           ],
         );
       },

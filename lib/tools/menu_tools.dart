@@ -32,14 +32,14 @@ class Menu extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 height: 50,
                 decoration: (label == 'Surah')?
-                const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.blue))) :
+                const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Color(0XFF263238)))) :
                 const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text('Surah', style: TextStyle(
-                        color: (label == 'Surah')? Colors.blue : Colors.grey,
+                        color: (label == 'Surah')? Colors.blueGrey[900] : Colors.grey,
                         fontWeight: (label == 'Surah')? FontWeight.w600 : null),
                     )
                   ],
@@ -64,14 +64,14 @@ class Menu extends StatelessWidget {
                   padding: const EdgeInsets.all(15),
                   height: 50,
                   decoration: (label == 'Juz')?
-                  const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.blue))) :
+                  const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Color(0XFF263238)))) :
                   const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('Juz', style: TextStyle(
-                          color: (label == 'Juz')? Colors.blue : Colors.grey,
+                          color: (label == 'Juz')? Colors.blueGrey[900] : Colors.grey,
                           fontWeight: (label == 'Juz')? FontWeight.w600 : null),
                       )
                     ],
@@ -95,14 +95,14 @@ class Menu extends StatelessWidget {
                   padding: const EdgeInsets.all(15),
                   height: 50,
                   decoration: (label == 'Bookmark')?
-                  const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.blue))) :
+                  const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Color(0XFF263238)))) :
                   const BoxDecoration(border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text('Bookmark', style: TextStyle(
-                          color: (label == 'Bookmark')? Colors.blue : Colors.grey,
+                          color: (label == 'Bookmark')? Colors.blueGrey[900] : Colors.grey,
                           fontWeight: (label == 'Bookmark')? FontWeight.w600 : null),
                       )
                     ],
